@@ -180,8 +180,8 @@ From $P_1$ and $P_2$, the final blocks are derived via scaling:
   ------
 
   Pseudocode for the Algorithm
-
-  SelectionSort(A, n)
+  
+SelectionSort(A, n)
     for i = 1 to n - 1 do
         min_index = i
         for j = i + 1 to n do
