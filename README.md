@@ -23,85 +23,79 @@ Time Complexity: By utilizing prefix sums for $O(1)$ range weight calculations, 
 For Q3
 ------
 
-Find Maximum and Minimum Using Divide and Conquer
-Algorithm
+## Algorithm: Maximum and Minimum using Divide and Conquer
 
-Function: FindMaxMin(A, low, high, max, min)
+### Pseudocode
 
-If low == high
+\[
+\begin{array}{l}
+\textbf{Algorithm } MaxMin(A, low, high)\\[2mm]
 
-Set max = min = A[low].
-Comparisons: 0
+\textbf{Input: } \text{Array } A[low \ldots high]\\
+\textbf{Output: } (\text{minimum},\text{maximum})\\[2mm]
 
-If high == low + 1
+\textbf{if } low = high \textbf{ then}\\
+\qquad min \gets A[low]\\
+\qquad max \gets A[low]\\
+\qquad \textbf{return } (min,max)\\[2mm]
 
-Compare A[low] and A[high].
-Set the larger as max and the smaller as min.
-Comparisons: 1
+\textbf{else if } high = low + 1 \textbf{ then}\\
+\qquad \textbf{if } A[low] < A[high] \textbf{ then}\\
+\qquad\qquad min \gets A[low]\\
+\qquad\qquad max \gets A[high]\\
+\qquad \textbf{else}\\
+\qquad\qquad min \gets A[high]\\
+\qquad\qquad max \gets A[low]\\
+\qquad \textbf{end if}\\
+\qquad \textbf{return } (min,max)\\[2mm]
 
-Otherwise
+mid \gets \left\lfloor \frac{low+high}{2} \right\rfloor\\[2mm]
 
-Find the midpoint:
+(min_1,max_1) \gets MaxMin(A,low,mid)\\
+(min_2,max_2) \gets MaxMin(A,mid+1,high)\\[2mm]
 
-𝑚
-𝑖
-𝑑
-=
-⌊
-(
-𝑙
-𝑜
-𝑤
-+
-ℎ
-𝑖
-𝑔
-ℎ
-)
-/
-2
-⌋
-Recursively find maximum and minimum in both halves.
-Compare the two maximums to get the overall maximum.
-Compare the two minimums to get the overall minimum.
-Comparisons for combining: 2
-Complexity
+min \gets \min(min_1,min_2)\\
+max \gets \max(max_1,max_2)\\[2mm]
 
-The recurrence is:
+\textbf{return } (min,max)\\
 
-𝑇
-(
-𝑛
-)
-=
-2
-𝑇
-(
-𝑛
-/
-2
-)
-+
-2
+\textbf{end if}
+\end{array}
+\]
 
-which gives:
+### Number of Comparisons
 
-𝑇
-(
-𝑛
-)
-=
-3
-𝑛
-2
-−
-2
+For \(n=2\), only one comparison is required.
 
-Therefore, the number of comparisons is bounded by:
+For \(n>2\), the array is divided into two halves. After recursively finding the minimum and maximum of both halves, two additional comparisons are required:
 
-3
-𝑛
-2
+\[
+T(n) = T(\lfloor n/2 \rfloor)
+     + T(\lceil n/2 \rceil) + 2
+\]
 
-Time Complexity: O(n)
-Space Complexity: O(log n) due to recursion.
+For \(n=2^k\),
+
+\[
+T(n)=2T(n/2)+2
+\]
+
+Solving the recurrence gives
+
+\[
+T(n)=\frac{3n}{2}-2
+\]
+
+Therefore,
+
+\[
+T(n) < \frac{3n}{2}
+\]
+
+Hence, the number of comparisons is bounded by
+
+\[
+\boxed{\frac{3n}{2}}
+\]
+
+which satisfies the requirement of the problem.
