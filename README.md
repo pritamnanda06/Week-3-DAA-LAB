@@ -25,8 +25,6 @@ For Q3
 
 ## Algorithm: Maximum and Minimum using Divide and Conquer
 
-### Pseudocode
-
 **Algorithm:** `MaxMin(A, low, high)`
 
 **Input:** Array $A[low \ldots high]$
