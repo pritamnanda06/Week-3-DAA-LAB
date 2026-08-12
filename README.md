@@ -206,7 +206,7 @@ From $P_1$ and $P_2$, the final blocks are derived via scaling:
 
   When the outer loop completes its iteration for $i = n - 1$, the first $n - 1$ smallest elements have been successfully placed in their correct, sorted positions from index $1$ to $n - 1$. By default, the single remaining element at index $n$ must be the largest element and is automatically in its correct final position. Thus, running a separate iteration for the last element ($i = n$) is redundant.
 
-Worst-Case Running Time ($\Theta$-notation)
+  Worst-Case Running Time ($\Theta$-notation)
 
  The outer loop executes $n - 1$ times. For each iteration $i$, the inner loop scans the remaining unsorted elements, performing $(n - i)$ comparisons. Total comparisons sum up to an arithmetic progression:
                                          $$(n-1) + (n-2) + \dots + 2 + 1 = \frac{n(n-1)}{2} = \Theta(n^2)$$
