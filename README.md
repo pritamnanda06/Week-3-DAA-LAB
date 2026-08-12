@@ -112,3 +112,99 @@ $$
 
 Thus, the divide-and-conquer algorithm satisfies the required comparison bound.
 
+-------------------------------------------------------------------------------
+
+For Q5
+------
+
+## Algorithm: Multiply Special-Pattern Square Matrices
+
+**Algorithm:** `SpecialMultiply(A, B, n)`
+
+**Input:** Two special-pattern matrices $A$ and $B$ of size $n \times n$, where $n=2^k$
+
+**Output:** Matrix $C = A \times B$
+
+1. If $n = 1$:
+
+   * Return $A[0][0] \times B[0][0]$
+
+2. Divide $A$ and $B$ into four equal-sized blocks:
+
+$$
+A =
+\begin{bmatrix}
+A_1 & A_2 \
+A_2 & A_1
+\end{bmatrix}
+$$
+
+$$
+B =
+\begin{bmatrix}
+B_1 & B_2 \
+B_2 & B_1
+\end{bmatrix}
+$$
+
+3. Using the recursive structure, compute:
+
+$$
+C_1 = A_1B_1 + A_2B_2
+$$
+
+$$
+C_2 = A_1B_2 + A_2B_1
+$$
+
+4. Form the resulting matrix:
+
+$$
+C =
+\begin{bmatrix}
+C_1 & C_2 \
+C_2 & C_1
+\end{bmatrix}
+$$
+
+5. Return $C$.
+
+### Recursive Procedure
+
+The two required block products are computed recursively:
+
+$$
+C_1 = \text{SpecialMultiply}(A_1,B_1)
++ \text{SpecialMultiply}(A_2,B_2)
+$$
+
+$$
+C_2 = \text{SpecialMultiply}(A_1,B_2)
++ \text{SpecialMultiply}(A_2,B_1)
+$$
+
+### Complexity Analysis
+
+At each level, four recursive multiplications are performed on matrices of size $n/2$.
+
+Therefore,
+
+$$
+T(n) = 4T(n/2) + O(n^2)
+$$
+
+Using the Master Theorem:
+
+$$
+T(n) = O(n^2)
+$$
+
+Hence, the multiplication of these special-pattern matrices can be performed in
+
+$$
+\boxed{O(n^2)}
+$$
+
+time, which satisfies the requirement of the problem.
+
+
