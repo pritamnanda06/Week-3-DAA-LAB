@@ -23,41 +23,85 @@ Time Complexity: By utilizing prefix sums for $O(1)$ range weight calculations, 
 For Q3
 ------
 
-Objective
----------
-Find the maximum and minimum elements in an array $A[1 \dots n]$ using the divide and conquer approach, with a comparison bound of $\frac{3n}{2}$.
+Find Maximum and Minimum Using Divide and Conquer
+Algorithm
 
-Function Signature
-------------------
-FindMaxMin(A, low, high, max, min)
+Function: FindMaxMin(A, low, high, max, min)
 
-Steps
------
+If low == high
 
-1. Base Case 1 (Single Element)
-   
- If $\text{low} == \text{high}$, then:$\text{max} = A[\text{low}]
-$$\text{min} = A[\text{low}]$(Comparisons = 0)
+Set max = min = A[low].
+Comparisons: 0
 
-2. Base Case 2
-3. 
-   (Two Elements)If $\text{high} == \text{low} + 1$, then:
-   If $A[\text{low}] > A[\text{high}]$, then $\text{max} = A[\text{low}]$, $\text{min} = A[\text{high}]$
-   Else, $\text{max} = A[\text{high}]$, $\text{min} = A[\text{low}]$(Comparisons = 1)
+If high == low + 1
 
-   3. Recursive Step
-   4. 
-      ($n > 2$)Find the midpoint:$$\text{mid} = \lfloor(\text{low} + \text{high}) / 2\rfloor
-      $$Divide and Conquer: Recursively find the max and min for both halves:
-      FindMaxMin(A, low, mid, max1, min1)
-      FindMaxMin(A, mid + 1, high, max2, min2)
-      Combine Step: Compare the results of the two halves to find the overall maximum and minimum:
-      If $\text{max1} > \text{max2}$, then $\text{max} = \text{max1}$, else $\text{max} = \text{max2}$
-      If $\text{min1} < \text{min2}$, then $\text{min} = \text{min1}$, else $\text{min} = \text{min2}$(Comparisons = 2 per combination level)
+Compare A[low] and A[high].
+Set the larger as max and the smaller as min.
+Comparisons: 1
 
-      Complexity & Comparison Analysis
-      
-      Recurrence Relation:
-      $$T(n) = 2T(n/2) + 2 \quad \text{for } n > 2
-      $$Total Comparisons:
-      The recurrence resolves to approximately $\frac{3n}{2} - 2$ comparisons in the worst case, which strictly satisfies the requirement of being bounded by $\frac{3n}{2}$.
+Otherwise
+
+Find the midpoint:
+
+𝑚
+𝑖
+𝑑
+=
+⌊
+(
+𝑙
+𝑜
+𝑤
++
+ℎ
+𝑖
+𝑔
+ℎ
+)
+/
+2
+⌋
+Recursively find maximum and minimum in both halves.
+Compare the two maximums to get the overall maximum.
+Compare the two minimums to get the overall minimum.
+Comparisons for combining: 2
+Complexity
+
+The recurrence is:
+
+𝑇
+(
+𝑛
+)
+=
+2
+𝑇
+(
+𝑛
+/
+2
+)
++
+2
+
+which gives:
+
+𝑇
+(
+𝑛
+)
+=
+3
+𝑛
+2
+−
+2
+
+Therefore, the number of comparisons is bounded by:
+
+3
+𝑛
+2
+
+Time Complexity: O(n)
+Space Complexity: O(log n) due to recursion.
