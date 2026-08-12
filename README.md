@@ -173,4 +173,44 @@ From $P_1$ and $P_2$, the final blocks are derived via scaling:
 
 * **Validation**: 
   * Reducing the branch factor to 2 ensures that the work satisfies the target **$O(n^2)$** time complexity constraint[cite: 1].
+ 
+  ------------------------------------------------------------------------------------------------------------------------------
 
+  For Q6
+  ------
+
+  Pseudocode for the Algorithm
+
+  SelectionSort(A, n)
+    for i = 1 to n - 1 do
+        min_index = i
+        for j = i + 1 to n do
+            if A[j] < A[min_index] then
+                min_index = j
+            end if
+        end for
+        if min_index != i then
+            swap A[i] with A[min_index]
+        end if
+    end for
+
+  Loop Invariant
+
+  Initialization: Before the first iteration ($i = 1$), the subarray $A[1 \dots i-1]$ is empty, which trivially satisfies the condition that it contains the smallest elements in sorted order.
+
+  Maintenance: If the invariant holds true at the start of iteration $i$, the inner loop finds the absolute minimum element in the remaining unsorted subarray $A[i \dots n]$ and swaps it into position $A[i]$. This extends the sorted subarray to $A[1 \dots i]$ while ensuring all elements in it are smaller than or equal to those remaining in $A[i+1 \dots n]$.
+
+  Termination: When the loop terminates at $i = n$, the subarray $A[1 \dots n-1]$ contains the smallest $n-1$ elements in sorted order, meaning the entire array $A[1 \dots n]$ is fully sorted.
+
+  Why it runs for only the first $(n-1)$ elements
+
+  When the outer loop completes its iteration for $i = n - 1$, the first $n - 1$ smallest elements have been successfully placed in their correct, sorted positions from index $1$ to $n - 1$. By default, the single remaining element at index $n$ must be the largest element and is automatically in its correct final position. Thus, running a separate iteration for the last element ($i = n$) is redundant.
+
+Worst-Case Running Time ($\Theta$-notation)
+
+ The outer loop executes $n - 1$ times. For each iteration $i$, the inner loop scans the remaining unsorted elements, performing $(n - i)$ comparisons. Total comparisons sum up to an arithmetic progression:
+                                         $$(n-1) + (n-2) + \dots + 2 + 1 = \frac{n(n-1)}{2} = \Theta(n^2)$$
+  
+Is the best-case running time any better?
+
+No, the best-case running time is not better; it is also $\Theta(n^2)$.
