@@ -115,94 +115,59 @@ Thus, the divide-and-conquer algorithm satisfies the required comparison bound.
 For Q5
 ------
 
-## Algorithm: Multiply Special-Pattern Square Matrices
+## Overview
+This document outlines the divide-and-conquer algorithm for multiplying two special-pattern square matrices of size $n \times n$ (where $n = 2^k$ for some natural number $k$) in optimal $O(n^2)$ time[cite: 1]. 
 
-**Algorithm:** `SpecialMultiply(A, B, n)`
+Each matrix follows a recursive block structure where, when divided into four equal-sized blocks, the two diagonal blocks are identical and the two off-diagonal blocks are identical[cite: 1]:
+$$M = \begin{pmatrix} M_1 & M_2 \\ M_2 & M_1 \end{pmatrix}$$
 
-**Input:** Two special-pattern matrices $A$ and $B$ of size $n \times n$, where $n=2^k$
+---
 
-**Output:** Matrix $C = A \times B$
+## Mathematical Foundation & Reduction Strategy
 
-1. If $n = 1$:
+Given two matrices $A$ and $B$ structured as:
+$$A = \begin{pmatrix} A_1 & A_2 \\ A_2 & A_1 \end{pmatrix}, \quad B = \begin{pmatrix} B_1 & B_2 \\ B_2 & B_1 \end{pmatrix}$$
 
-   * Return $A[0][0] \times B[0][0]$
+The product matrix $C = A \times B$ maintains the same structural format $\begin{pmatrix} C_1 & C_2 \\ C_2 & C_1 \end{pmatrix}$[cite: 1], where:
+* $C_1 = A_1 B_1 + A_2 B_2$
+* $C_2 = A_1 B_2 + A_2 B_1$
 
-2. Divide $A$ and $B$ into four equal-sized blocks:
+To avoid the $O(n^2 \log n)$ overhead of 4 separate recursive calls, we compute intermediate products using only **two recursive calls** via the linear combination identities:
+1. $P_1 = (A_1 + A_2) \times (B_1 + B_2)$
+2. $P_2 = (A_1 - A_2) \times (B_1 - B_2)$
 
-$$
-A =
-\begin{bmatrix}
-A_1 & A_2 \
-A_2 & A_1
-\end{bmatrix}
-$$
+From $P_1$ and $P_2$, the final blocks are derived via scaling:
+* $C_1 = \frac{P_1 + P_2}{2}$
+* $C_2 = \frac{P_1 - P_2}{2}$
 
-$$
-B =
-\begin{bmatrix}
-B_1 & B_2 \
-B_2 & B_1
-\end{bmatrix}
-$$
+---
 
-3. Using the recursive structure, compute:
+## Algorithm Description
 
-$$
-C_1 = A_1B_1 + A_2B_2
-$$
+1. **Base Case**: If $n = 1$, compute and return $A[0][0] \times B[0][0]$.
+2. **Divide Step**: For $n > 1$, split each $n \times n$ matrix into four blocks of size $k \times k$ (where $k = n / 2$) to extract $A_1, A_2$ and $B_1, B_2$[cite: 1].
+3. **Intermediate Computation Step**: Compute addition and subtraction matrices taking $O(n^2)$ time:
+   * $\text{TempA}_1 = A_1 + A_2$, $\text{TempA}_2 = A_1 - A_2$
+   * $\text{TempB}_1 = B_1 + B_2$, $\text{TempB}_2 = B_1 - B_2$
+4. **Conquer Step**: Perform only **$2$ recursive multiplications**:
+   * $P_1 = \text{SpecialMultiply}(\text{TempA}_1, \text{TempB}_1, k)$
+   * $P_2 = \text{SpecialMultiply}(\text{TempA}_2, \text{TempB}_2, k)$
+5. **Combine Step**: Calculate final blocks using scaling and assemble the result matrix $C = \begin{pmatrix} C_1 & C_2 \\ C_2 & C_1 \end{pmatrix}$[cite: 1]:
+   * $C_1 = \frac{P_1 + P_2}{2}$
+   * $C_2 = \frac{P_1 - P_2}{2}$
 
-$$
-C_2 = A_1B_2 + A_2B_1
-$$
+---
 
-4. Form the resulting matrix:
+## Complexity Analysis & Validation
 
-$$
-C =
-\begin{bmatrix}
-C_1 & C_2 \
-C_2 & C_1
-\end{bmatrix}
-$$
+* **Recurrence Relation**: 
+  $$T(n) = 2T\left(\frac{n}{2}\right) + O(n^2)$$
+  This accounts for $2$ recursive subproblems of size $n / 2$ combined with $O(n^2)$ matrix addition and scaling overhead at the current level[cite: 1].
 
-5. Return $C$.
+* **Asymptotic Resolution**: 
+  Applying the Master Theorem where $a = 2$, $b = 2$, and $f(n) = O(n^2)$ yields:
+  $$T(n) = O(n^2)$$
 
-### Recursive Procedure
-
-The two required block products are computed recursively:
-
-$$
-C_1 = \text{SpecialMultiply}(A_1,B_1)
-+ \text{SpecialMultiply}(A_2,B_2)
-$$
-
-$$
-C_2 = \text{SpecialMultiply}(A_1,B_2)
-+ \text{SpecialMultiply}(A_2,B_1)
-$$
-
-### Complexity Analysis
-
-At each level, four recursive multiplications are performed on matrices of size $n/2$.
-
-Therefore,
-
-$$
-T(n) = 4T(n/2) + O(n^2)
-$$
-
-Using the Master Theorem:
-
-$$
-T(n) = O(n^2)
-$$
-
-Hence, the multiplication of these special-pattern matrices can be performed in
-
-$$
-\boxed{O(n^2)}
-$$
-
-time, which satisfies the requirement of the problem.
-
+* **Validation**: 
+  Reducing the branch factor to 2 ensures that the work satisfies the target **$O(n^2)$** time complexity constraint[cite: 1].
 
